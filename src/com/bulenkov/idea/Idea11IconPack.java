@@ -29,7 +29,6 @@ public class Idea11IconPack extends IconPathPatcher {
         HashSet<String> icons = new HashSet<>();
         icons.add("/actions/addFacesSupport.png");
         icons.add("/actions/annotate.png");
-        icons.add("/actions/back.png");
         icons.add("/actions/browser-externalJavaDoc.png");
         icons.add("/actions/cancel.png");
         icons.add("/actions/checked.png");
@@ -66,7 +65,6 @@ public class Idea11IconPack extends IconPathPatcher {
         icons.add("/actions/fileStatus.png");
         icons.add("/actions/filter_small.png");
         icons.add("/actions/find.png");
-        icons.add("/actions/forward.png");
         icons.add("/actions/gc.png");
         icons.add("/actions/get.png");
         icons.add("/actions/groupByMethod.png");
@@ -458,6 +456,7 @@ public class Idea11IconPack extends IconPathPatcher {
         icons.add("/icons/inspector/sortByCategory.png");
         icons.add("/icons/inspector/sortByName.png");
         icons.add("/icons/inspector/useFilter.png");
+        icons.add("/icons/toolWindowDatabase.png");
         icons.add("/ide/dnd/bottom.png");
         icons.add("/ide/dnd/left.png");
         icons.add("/ide/dnd/right.png");
@@ -915,5 +914,7 @@ public class Idea11IconPack extends IconPathPatcher {
             map.put(pngPath, newPath);
             map.put(svgPath, newPath);
         }
+
+        map.put("/icons/dbms.svg", "/idea11/icons/dbms.svg");
     }
 }
