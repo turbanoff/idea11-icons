@@ -456,6 +456,7 @@ public class Idea11IconPack extends IconPathPatcher {
         icons.add("/icons/inspector/sortByCategory.png");
         icons.add("/icons/inspector/sortByName.png");
         icons.add("/icons/inspector/useFilter.png");
+        icons.add("/icons/springToolWindow.png");
         icons.add("/icons/toolWindowDatabase.png");
         icons.add("/ide/dnd/bottom.png");
         icons.add("/ide/dnd/left.png");
