@@ -1,33 +1,47 @@
 package com.bulenkov.idea;
 
+import java.util.HashSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.IconPathPatcher;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.HashSet;
 
 public class Idea11IconPack extends IconPathPatcher {
 
-    private static final HashMap<String, String> map = new HashMap<>();
+    private static final TreeMap<String, String> map = new TreeMap<>();
+    private static final TreeSet<String> newPaths = new TreeSet<>();
 
     public Idea11IconPack() {
         IconLoader.installPathPatcher(this);
     }
 
     @Nullable
-    public String patchPath(String path) {
-        return map.get(path);
+    @Override
+    public String patchPath(@NotNull String path, ClassLoader classLoader) {
+        String mapped = map.get(path);
+        if (false) {
+            System.out.println(mapped);
+        }
+        if (mapped != null) {
+            return mapped;
+        }
+        return mapped;
     }
 
     @Nullable
-    public Class getContextClass(String path) {
-        return this.getClass();
+    @Override
+    public ClassLoader getContextClassLoader(@NotNull String path, ClassLoader originalClassLoader) {
+        if (map.containsKey(path) || newPaths.contains(path)) {
+            return Idea11IconPack.class.getClassLoader();
+        }
+        return originalClassLoader;
     }
 
     static {
         HashSet<String> icons = new HashSet<>();
-        icons.add("/actions/addFacesSupport.png");
         icons.add("/actions/annotate.png");
         icons.add("/actions/browser-externalJavaDoc.png");
         icons.add("/actions/cancel.png");
@@ -43,12 +57,10 @@ public class Idea11IconPack extends IconPathPatcher {
         icons.add("/actions/closeNew.png");
         icons.add("/actions/closeNewHovered.png");
         icons.add("/actions/collapseall.png");
-        icons.add("/actions/commit.png");
         icons.add("/actions/compile.png");
         icons.add("/actions/consoleHistory.png");
         icons.add("/actions/copy.png");
         icons.add("/actions/createFromUsage.png");
-        icons.add("/actions/createPatch.png");
         icons.add("/actions/cross.png");
         icons.add("/actions/delete.png");
         icons.add("/actions/diff.png");
@@ -607,14 +619,6 @@ public class Idea11IconPack extends IconPathPatcher {
         icons.add("/nodes/DataTables.png");
         icons.add("/nodes/dataView.png");
         icons.add("/nodes/deploy.png");
-        icons.add("/nodes/ejb.png");
-        icons.add("/nodes/ejbBusinessMethod.png");
-        icons.add("/nodes/ejbCmpField.png");
-        icons.add("/nodes/ejbCmrField.png");
-        icons.add("/nodes/ejbCreateMethod.png");
-        icons.add("/nodes/ejbFinderMethod.png");
-        icons.add("/nodes/ejbPrimaryKeyClass.png");
-        icons.add("/nodes/ejbReference.png");
         icons.add("/nodes/emptyNode.png");
         icons.add("/nodes/enterpriseProject.png");
         icons.add("/nodes/entryPoints.png");
@@ -910,12 +914,21 @@ public class Idea11IconPack extends IconPathPatcher {
         icons.add("/xml/html_id.png");
 
         for (String pngPath : icons) {
-            String newPath = "/idea11" + pngPath;
+            String newPath = "idea11" + pngPath;
             String svgPath = pngPath.substring(0, pngPath.length() - 3) + "svg";
             map.put(pngPath, newPath);
             map.put(svgPath, newPath);
+
+            if (pngPath.startsWith("/")) {
+                map.put(pngPath.substring(1), newPath);
+            }
+            if (svgPath.startsWith("/")) {
+                map.put(svgPath.substring(1), newPath);
+            }
         }
 
-        map.put("/icons/dbms.svg", "/idea11/icons/dbms.svg");
+        map.put("/icons/dbms.svg", "idea11/icons/dbms.svg");
+        map.put("icons/dbms.svg", "idea11/icons/dbms.svg");
+        newPaths.addAll(map.values());
     }
 }
