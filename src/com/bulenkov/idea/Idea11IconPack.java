@@ -21,14 +21,7 @@ public class Idea11IconPack extends IconPathPatcher {
     @Nullable
     @Override
     public String patchPath(@NotNull String path, ClassLoader classLoader) {
-        String mapped = map.get(path);
-        if (false) {
-            System.out.println(mapped);
-        }
-        if (mapped != null) {
-            return mapped;
-        }
-        return mapped;
+        return map.get(path);
     }
 
     @Nullable
@@ -41,6 +34,29 @@ public class Idea11IconPack extends IconPathPatcher {
     }
 
     static {
+        HashSet<String> icons = getAllIcons();
+
+        for (String pngPath : icons) {
+            String newPath = "idea11" + pngPath;
+            String svgPath = pngPath.substring(0, pngPath.length() - 3) + "svg";
+            putToMap(pngPath, newPath);
+            putToMap(svgPath, newPath);
+
+            if (pngPath.startsWith("/")) {
+                putToMap(pngPath.substring(1), newPath);
+            }
+            if (svgPath.startsWith("/")) {
+                putToMap(svgPath.substring(1), newPath);
+            }
+        }
+
+        putToMap("/icons/dbms.svg", "idea11/icons/dbms.svg");
+        putToMap("icons/dbms.svg", "idea11/icons/dbms.svg");
+        newPaths.addAll(map.values());
+    }
+
+    @NotNull
+    private static HashSet<String> getAllIcons() {
         HashSet<String> icons = new HashSet<>();
         icons.add("/actions/annotate.png");
         icons.add("/actions/browser-externalJavaDoc.png");
@@ -912,23 +928,13 @@ public class Idea11IconPack extends IconPathPatcher {
         icons.add("/xml/browsers/safari16.png");
         icons.add("/xml/css_class.png");
         icons.add("/xml/html_id.png");
+        return icons;
+    }
 
-        for (String pngPath : icons) {
-            String newPath = "idea11" + pngPath;
-            String svgPath = pngPath.substring(0, pngPath.length() - 3) + "svg";
-            map.put(pngPath, newPath);
-            map.put(svgPath, newPath);
-
-            if (pngPath.startsWith("/")) {
-                map.put(pngPath.substring(1), newPath);
-            }
-            if (svgPath.startsWith("/")) {
-                map.put(svgPath.substring(1), newPath);
-            }
+    private static void putToMap(String oldPath, String newPath) {
+        if (newPath.startsWith("/")) {
+            newPath = newPath.substring(1);
         }
-
-        map.put("/icons/dbms.svg", "idea11/icons/dbms.svg");
-        map.put("icons/dbms.svg", "idea11/icons/dbms.svg");
-        newPaths.addAll(map.values());
+        map.put(oldPath, newPath);
     }
 }
